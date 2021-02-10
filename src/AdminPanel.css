@@ -1,0 +1,70 @@
+.ItemsTable{
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.ItemsTable td, .ItemsTable th {
+
+    padding: 8px;
+}
+
+.ItemsTable tr:nth-child(even){
+    background-color: #a5a3a3;
+    color: #f2f2f2;
+    display:none;
+
+}
+.ItemsTable tr:hover {
+    background-color: #5e5e5e;
+    color: #f2f2f2;
+}
+.ItemsTable th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #807e7e;
+    color: white;
+
+}
+.id{
+    width: 7%;
+}
+.producer{
+    width: 23%;
+}
+.model{
+    width: 25%;
+}
+.category{
+    width: 30%;
+}
+
+.hiddenDiv{
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+}
+.lastInspection{
+    float: left;
+    width: 20%;
+    height: 100%;
+}
+.inspectionInterval{
+    width: 20%;
+    height: 100%;
+    float: left;
+}
+.comment{
+    width: 40%;
+    height: 100%;
+    float:left;
+}
+.actions{
+    width: 20%;
+    height: 100%;
+    float:left;
+}
+.tabRow{
+    cursor: pointer;
+}
