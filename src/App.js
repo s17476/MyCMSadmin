@@ -155,6 +155,7 @@ class App extends Component{
             });
 
         //build
+        localStorage.setItem("item", item[0]);
         ReactDOM.render(
             <div className="App-page" id="Page">
                 <h1 id="Page-title" style={{
@@ -166,16 +167,17 @@ class App extends Component{
                     src={item[1].image}
                     id="img"
                     alt=""
+
                     style={{
                         width: imgWidth,
                         height: imgHeight,
                         float: imgFloat
                     }}
                 />
-                <p>{item[1].text}</p>
+                <p id="Page-text">{item[1].text}</p>
             </div>
             ,document.getElementById("Body"));
-
+        console.log(document.getElementById("Page-title").style.fontSize);
     }
 
   render(){

@@ -49,6 +49,35 @@ class AdminPanel extends React.Component {
 
     }
 
+
+    contentSubmitHandler = (event) => {
+        event.preventDefault();
+        let title = document.getElementById("Page-title");
+        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("title").set({
+            color: title.style.color,
+            fontSize: title.style.fontSize,
+            margin: title.style.marginLeft
+        },{ merge: true })
+            .then(() => {
+                console.log("Content title successfully written!");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+
+        let img = document.getElementById("img");
+        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("image").set({
+            width: img.style.width,
+            height: img.style.height
+        },{ merge: true })
+            .then(() => {
+                console.log("Content image successfully written!");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+            });
+    }
+
     rgbToHex(col)
     {
         if(col.charAt(0)=='r')
@@ -478,9 +507,16 @@ class AdminPanel extends React.Component {
 
 
 
-        var headerRef = await db.collection("header").doc("menu");
-        headerRef.get()
-            .then((doc) => {
+
+
+        var contentRef = await db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("title");
+        contentRef.get()
+            .then(async (doc) => {
+                var contentRef = await db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("image");
+                contentRef.get()
+                    .then((docImg) => {
+
+
                 ReactDOM.render(
                     <div className="Admin-header">
                         <table className="ItemsTable">
@@ -510,25 +546,6 @@ class AdminPanel extends React.Component {
                                 }
                             }}>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 <td>Title</td>
                             </tr>
 
@@ -538,7 +555,7 @@ class AdminPanel extends React.Component {
 
                                         <p className="Label">Text size:</p>
                                         <input type="range" min="8" max="80"
-                                               defaultValue={document.getElementById("Page-title").style.fontSize.split("px")[0]}
+                                               defaultValue={doc.data().fontSize.split("px")[0]}
                                                name = "fontSize"
                                                onChange={(event) => {
                                                    let val = event.target.value;
@@ -547,85 +564,23 @@ class AdminPanel extends React.Component {
                                         />
 
                                         <p className="Label">Text margin:</p>
-                                        <input type="range" min="0" max="30"
-                                               defaultValue={doc.data().margin.split("px")[0]}
+                                        <input type="range" min="0" max="100"
+                                               defaultValue={doc.data().margin.split("%")[0]}
                                                name = "textMargin"
                                                onChange={(event) => {
                                                    let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.padding = val+"px";
-
-                                                   });
+                                                   document.getElementById("Page-title").style.marginLeft = val+"%";
                                                }}
                                         />
                                         <p className="Label">Text color:</p>
-                                        <input type="color" id="menuColor" name="menuColor" defaultValue={this.rgbToHex(doc.data().textColor)}
+                                        <input type="color" id="pageTextColor" name="pageTextColor" defaultValue={this.rgbToHex(doc.data().color)}
                                                onChange={(event) => {
                                                    let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.color = val;
-                                                       document.getElementById(item.id).onmouseleave= () => {
-                                                           item.style.color = val;
-                                                           item.style.backgroundColor = document.getElementById("menuBackground").value;
-                                                       };
-                                                   });
-                                               }}
-                                        />
-                                        <p className="Label">Background:</p>
-                                        <input type="color" id="menuBackground" name="menuBackground" defaultValue={this.rgbToHex(doc.data().backgroundColor)}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-
-                                                   document.getElementById("navbar").style.backgroundColor = val;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.backgroundColor = val;
-                                                       document.getElementById(item.id).onmouseleave= () => {
-                                                           item.style.color = document.getElementById("menuColor").value;
-                                                           item.style.backgroundColor = val;
-                                                       };
-                                                   });
-
+                                                   document.getElementById("Page-title").style.color = val;
                                                }}
                                         />
 
-
-                                        <p className="Label">Hover text color:</p>
-                                        <input type="color" id="hoverMenuColor" name="menuColor" defaultValue={doc.data().hoverColor}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       document.getElementById(item.id).onmouseenter= () => {
-                                                           item.style.color = val;
-                                                           item.style.backgroundColor = document.getElementById("hoverMenuBackground").value;
-                                                       };
-                                                   });
-                                               }}
-                                        />
-                                        <p className="Label">Hover background:</p>
-                                        <input type="color" id="hoverMenuBackground" name="menuBackground" defaultValue={doc.data().hoverBackgroundColor}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       document.getElementById(item.id).onmouseenter= () => {
-                                                           item.style.color = document.getElementById("hoverMenuColor").value;
-                                                           item.style.backgroundColor = val;
-
-                                                       };
-                                                   });
-                                               }}
-                                        />
-
-                                        <button className="App-save" id="Save" onClick={this.menuSubmitHandler}>Save menu changes</button>
+                                        <button className="App-save" id="Save" onClick={this.contentSubmitHandler}>Save content changes</button>
 
 
                                     </div>
@@ -640,10 +595,9 @@ class AdminPanel extends React.Component {
 
 
 
-
-                            <tr id="contentTab" className="tabRow" onClick={() => {
-                                var thisElement = document.getElementById("contentTab");
-                                var e = document.getElementById("-contentTab");
+                            <tr id="contentImgTab" className="tabRow" onClick={() => {
+                                var thisElement = document.getElementById("contentImgTab");
+                                var e = document.getElementById("-contentImgTab");
                                 if(e.style.display === 'table-row'){
                                     e.style.display = 'none';
                                     thisElement.style.border = 'none';
@@ -659,127 +613,35 @@ class AdminPanel extends React.Component {
                                 }
                             }}>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                <td>Menu</td>
+                                <td>Image</td>
                             </tr>
 
-                            <tr className="details" id={"-contentTab"}>
+                            <tr className="details" id={"-contentImgTab"}>
                                 <td>
                                     <div className="slidecontainer">
 
-                                        <p className="Label">Text size:</p>
-                                        <input type="range" min="3" max="50"
-                                               defaultValue={doc.data().fontSize.split("px")[0]}
+                                        <p className="Label">Image height:</p>
+                                        <input type="range" min="20" max="1000"
+                                               defaultValue={docImg.data().height.split("px")[0]}
                                                name = "fontSize"
                                                onChange={(event) => {
                                                    let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.fontSize = val+"px";
-
-                                                   });
+                                                   document.getElementById("img").style.height = val+"px";
                                                }}
                                         />
 
-                                        <p className="Label">Text margin:</p>
-                                        <input type="range" min="0" max="30"
-                                               defaultValue={doc.data().margin.split("px")[0]}
+                                        <p className="Label">Image width:</p>
+                                        <input type="range" min="20" max="1000"
+                                               defaultValue={docImg.data().width.split("px")[0]}
                                                name = "textMargin"
                                                onChange={(event) => {
                                                    let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.padding = val+"px";
-
-                                                   });
-                                               }}
-                                        />
-                                        <p className="Label">Text color:</p>
-                                        <input type="color" id="menuColor" name="menuColor" defaultValue={this.rgbToHex(doc.data().textColor)}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.color = val;
-                                                       document.getElementById(item.id).onmouseleave= () => {
-                                                           item.style.color = val;
-                                                           item.style.backgroundColor = document.getElementById("menuBackground").value;
-                                                       };
-                                                   });
-                                               }}
-                                        />
-                                        <p className="Label">Background:</p>
-                                        <input type="color" id="menuBackground" name="menuBackground" defaultValue={this.rgbToHex(doc.data().backgroundColor)}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-
-                                                   document.getElementById("navbar").style.backgroundColor = val;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       item.style.backgroundColor = val;
-                                                       document.getElementById(item.id).onmouseleave= () => {
-                                                           item.style.color = document.getElementById("menuColor").value;
-                                                           item.style.backgroundColor = val;
-                                                       };
-                                                   });
-
+                                                   document.getElementById("img").style.width = val+"px";
                                                }}
                                         />
 
 
-                                        <p className="Label">Hover text color:</p>
-                                        <input type="color" id="hoverMenuColor" name="menuColor" defaultValue={doc.data().hoverColor}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       document.getElementById(item.id).onmouseenter= () => {
-                                                           item.style.color = val;
-                                                           item.style.backgroundColor = document.getElementById("hoverMenuBackground").value;
-                                                       };
-                                                   });
-                                               }}
-                                        />
-                                        <p className="Label">Hover background:</p>
-                                        <input type="color" id="hoverMenuBackground" name="menuBackground" defaultValue={doc.data().hoverBackgroundColor}
-                                               onChange={(event) => {
-                                                   let val = event.target.value;
-                                                   var menuItems = document.getElementsByClassName("App-nav-item");
-
-                                                   Array.from(menuItems).forEach((item) => {
-                                                       document.getElementById(item.id).onmouseenter= () => {
-                                                           item.style.color = document.getElementById("hoverMenuColor").value;
-                                                           item.style.backgroundColor = val;
-
-                                                       };
-                                                   });
-                                               }}
-                                        />
-
-                                        <button className="App-save" id="Save" onClick={this.menuSubmitHandler}>Save menu changes</button>
+                                        <button className="App-save" id="Save" onClick={this.contentSubmitHandler}>Save content changes</button>
 
 
                                     </div>
@@ -787,26 +649,35 @@ class AdminPanel extends React.Component {
 
                             </tr>
 
-
-
-
-
                             </tbody>
-
-
-
-
-
 
                         </table>
 
                     </div>,
                     document.getElementById("Admin-content")
                 );
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
             })
             .catch((error) => {
                 console.log(error);
             });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     render() {
@@ -815,6 +686,7 @@ class AdminPanel extends React.Component {
                 <div className="Admin-header" id="Admin-header"></div>
                 <div className="Admin-menu" id="Admin-menu"></div>
                 <div className="Admin-content" id="Admin-content"></div>
+                <div className="Admin-content" id="Admin-content-img"></div>
             </div>
         );
     }
