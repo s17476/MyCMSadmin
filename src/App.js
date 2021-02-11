@@ -13,9 +13,6 @@ class App extends Component{
         loaded: false,
         currentItem: [],
         items: [],
-        logoHeight: "",
-        logoWidth: "",
-        logoMargin: ""
     };
   }
 
@@ -36,18 +33,13 @@ class App extends Component{
     var headerRef = await db.collection("header").doc("myHeader");
     headerRef.get()
         .then((doc) => {
-            this.setState({
-                logoHeight: doc.data().logoHeight,
-                logoWidth: doc.data().logoWidth,
-                logoMargin: doc.data().logoMargin
-                });
             ReactDOM.render(
                 <div className="App-head" id="App-head" style={{background: doc.data().backgroundColor}}>
                     <img src={doc.data().headerLogo} className="App-logo" id="logo" alt="logo"
                         style = {{
-                            height: this.state.logoHeight+"px",
-                            width: this.state.logoWidth+"px",
-                            margin: this.state.logoMargin+"px"
+                            height: doc.data().logoHeight,
+                            width: doc.data().logoWidth,
+                            margin: doc.data().logoMargin
                     }}
                     />
                     <h1 className="App-text" id="App-text"
@@ -69,7 +61,7 @@ class App extends Component{
     var pagesRef = await db.collection("pages");
     pagesRef.get().then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(doc.id, " => ", doc.data());
+
         items.push([doc.id, doc.data()]);
       })
       this.setState({
@@ -77,6 +69,43 @@ class App extends Component{
       });
     })
 
+      //load menu style propeteries
+      var menuRef = await db.collection("header").doc("menu");
+      menuRef.get()
+          .then((doc) => {
+              var menu = document.getElementById("navbar");
+
+
+
+              var menuItems = document.getElementsByClassName("App-nav-item");
+
+              var backgroundColor = doc.data().backgroundColor;
+              var color = doc.data().textColor;
+              var margin = doc.data().margin;
+              var fontSize = doc.data().fontSize;
+              var hoverColor = doc.data().hoverColor;
+              var hoverBackgroundColor = doc.data().hoverBackgroundColor;
+
+              menu.style.backgroundColor = backgroundColor;
+
+              Array.from(menuItems).forEach((item) => {
+                  item.style.color = color;
+                  item.style.padding = margin;
+                  item.style.fontSize = fontSize;
+                  document.getElementById(item.id).onmouseleave = () => {
+                      item.style.color = color;
+                      item.style.background = backgroundColor;
+                  };
+                  document.getElementById(item.id).onmouseenter= () => {
+                      item.style.color = hoverColor;
+                      item.style.backgroundColor = hoverBackgroundColor;
+                  };
+              });
+
+          })
+          .catch((error) => {
+              console.log(error);
+          });
       //load admin panel
 
       ReactDOM.render(
@@ -105,7 +134,22 @@ class App extends Component{
                 imgWidth = doc.data().width;
                 imgHeight = doc.data().height;
                 imgFloat = doc.data().float;
-                console.log(imgHeight, imgWidth)
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        let color, fontSize, margin;
+        await db.collection("pages")
+            .doc(item[0])
+            .collection("style")
+            .doc("title")
+            .get()
+            .then((doc) => {
+                color = doc.data().color;
+                fontSize = doc.data().fontSize;
+                margin = doc.data().margin;
+
             }).catch((error) => {
                 console.log(error);
             });
@@ -113,7 +157,11 @@ class App extends Component{
         //build
         ReactDOM.render(
             <div className="App-page" id="Page">
-                <h1>{item[1].title}</h1>
+                <h1 id="Page-title" style={{
+                    color: color,
+                    fontSize: fontSize,
+                    marginLeft: margin
+                }}>{item[1].title}</h1>
                 <img
                     src={item[1].image}
                     id="img"
@@ -127,7 +175,6 @@ class App extends Component{
                 <p>{item[1].text}</p>
             </div>
             ,document.getElementById("Body"));
-        console.log("iiiiiiiiiiddddddddddd", item[0]);
 
     }
 

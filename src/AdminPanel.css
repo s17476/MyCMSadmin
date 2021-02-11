@@ -10,20 +10,20 @@
 }
 
 .ItemsTable tr:nth-child(even){
-    background-color: #a5a3a3;
-    color: #f2f2f2;
+    background-color: #ffffff;
+    color: #000000;
     display:none;
 
 }
 .ItemsTable tr:hover {
-    background-color: #5e5e5e;
-    color: #f2f2f2;
+    background-color: #d4d3d3;
+    color: #000000;
 }
 .ItemsTable th {
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #807e7e;
+    background-color: #a2a1a1;
     color: white;
 
 }
@@ -67,4 +67,26 @@
 }
 .tabRow{
     cursor: pointer;
+}
+.App-save{
+    padding: 7px;
+    margin: auto;
+    margin-top: 5px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #366dff;
+    color: white;
+}
+.App-save:hover{
+    background-color: #1646be;
+    cursor: pointer;
+}
+input{
+
+    width: 96%;
+
+}
+.Label{
+    margin-bottom: 3px;
 }
