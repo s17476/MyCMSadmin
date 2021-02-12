@@ -71,7 +71,7 @@
 .App-save{
     padding: 7px;
     margin: auto;
-    margin-top: 5px;
+    margin-top: 15px;
     width: 100%;
     border: none;
     border-radius: 5px;
@@ -82,6 +82,20 @@
     background-color: #1646be;
     cursor: pointer;
 }
+.App-delete{
+    padding: 7px;
+    margin: auto;
+    margin-top: 5px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #ff0000;
+    color: white;
+}
+.App-delete:hover{
+    background-color: #ba0000;
+    cursor: pointer;
+}
 input{
 
     width: 96%;
@@ -90,3 +104,15 @@ input{
 .Label{
     margin-bottom: 3px;
 }
+.App-float{
+    padding: 7px;
+    display: inline-block;
+    width: 46%;
+    border: none;
+    border-radius: 5px;
+    background-color: #9b9a9a;
+    color: white;
+    margin: 3px;
+    cursor: pointer;
+}
+

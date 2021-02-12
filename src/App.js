@@ -17,8 +17,10 @@ class App extends Component{
   }
 
   componentDidUpdate(){
+      //open main page onLoad
       if((document.getElementById("main") != null) && (this.state.loaded === false)){
           document.getElementById("main").click();
+          localStorage.setItem("item", "main");
           this.setState({
               loaded: true
           })
@@ -107,13 +109,26 @@ class App extends Component{
               console.log(error);
           });
       //load admin panel
-
       ReactDOM.render(
           <AdminPanel />,
           document.getElementById("App-admin")
       )
 
   }
+
+    rgbToHex(col)
+    {
+        if(col.charAt(0)=='r')
+        {
+            col=col.replace('rgb(','').replace(')','').split(',');
+            var r=parseInt(col[0], 10).toString(16);
+            var g=parseInt(col[1], 10).toString(16);
+            var b=parseInt(col[2], 10).toString(16);
+            r=r.length==1?'0'+r:r; g=g.length==1?'0'+g:g; b=b.length==1?'0'+b:b;
+            var colHex='#'+r+g+b;
+            return colHex;
+        }
+    }
 
   async setItemId(item){
       this.setState({
@@ -135,6 +150,19 @@ class App extends Component{
                 imgHeight = doc.data().height;
                 imgFloat = doc.data().float;
 
+                if(document.getElementById("Image-height") != null){
+                    document.getElementById("Image-height").value = imgHeight.split("px")[0];
+                    document.getElementById("Image-width").value = imgWidth.split("px")[0];
+                    if(imgFloat === "right"){
+                        document.getElementById("right").style.backgroundColor = "#00b100";
+                        document.getElementById("left").style.backgroundColor = "#9b9a9a";
+                    }else{
+                        document.getElementById("left").style.backgroundColor = "#00b100";
+                        document.getElementById("right").style.backgroundColor = "#9b9a9a";
+                    }
+                }
+
+
             }).catch((error) => {
                 console.log(error);
             });
@@ -149,6 +177,13 @@ class App extends Component{
                 color = doc.data().color;
                 fontSize = doc.data().fontSize;
                 margin = doc.data().margin;
+
+                if(document.getElementById("pageTextColor") != null){
+                    document.getElementById("pageTextColor").value = this.rgbToHex(color);
+                    document.getElementById("Title-textSize").value = fontSize.split("px")[0];
+                    document.getElementById("Title-textMargin").value = margin.split("%")[0];
+                    document.getElementById("Title-pageTitle").value = item[1].title;
+                }
 
             }).catch((error) => {
                 console.log(error);
@@ -208,7 +243,9 @@ class App extends Component{
                 </div>
                 <div className="App-body" id="Body">
                 </div>
+                <div id="sticky" className="sticky">
 
+                </div>
 
             </div>
 
