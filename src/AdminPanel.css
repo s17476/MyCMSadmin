@@ -67,6 +67,7 @@
 }
 .tabRow{
     cursor: pointer;
+    background-color: white;
 }
 .App-save{
     padding: 7px;
@@ -80,6 +81,21 @@
 }
 .App-save:hover{
     background-color: #1646be;
+    cursor: pointer;
+}
+.App-add{
+    padding: 7px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #06ab00;
+    color: white;
+}
+.App-add:hover{
+    background-color: #037a00;
     cursor: pointer;
 }
 .App-delete{
@@ -116,3 +132,17 @@ input{
     cursor: pointer;
 }
 
+.App-textEdit{
+    padding: 7px;
+    margin: auto;
+    margin-top: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #6b6b6b;
+    color: white;
+}
+.App-textEdit:hover{
+    background-color: #434343;
+    cursor: pointer;
+}

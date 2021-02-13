@@ -108,11 +108,18 @@ class App extends Component{
           .catch((error) => {
               console.log(error);
           });
+
+
+
       //load admin panel
       ReactDOM.render(
           <AdminPanel />,
           document.getElementById("App-admin")
       )
+
+
+
+
 
   }
 
@@ -189,6 +196,38 @@ class App extends Component{
                 console.log(error);
             });
 
+
+        let textColor, textFontSize, textMargin;
+        await db.collection("pages")
+            .doc(item[0])
+            .collection("style")
+            .doc("text")
+            .get()
+            .then((doc) => {
+                textColor = doc.data().color;
+                textFontSize = doc.data().fontSize;
+                textMargin = doc.data().margin;
+
+                if(document.getElementById("Content-textSize") != null){
+                    document.getElementById("Content-textSize").value = textFontSize.split("px")[0];
+                    document.getElementById("Content-textMargin").value = textMargin.split("%")[0];
+                    document.getElementById("Content-textColor").value = textColor;
+
+
+
+
+
+
+                }
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+
+
+
+
         //build
         localStorage.setItem("item", item[0]);
         ReactDOM.render(
@@ -209,10 +248,44 @@ class App extends Component{
                         float: imgFloat
                     }}
                 />
-                <p id="Page-text">{item[1].text}</p>
+                <p id="Page-text" style={{
+
+                }}></p>
             </div>
             ,document.getElementById("Body"));
-        console.log(document.getElementById("Page-title").style.fontSize);
+        document.getElementById("Page-text").setAttribute("contenteditable", "false");
+        document.getElementById("Page-text").innerHTML = item[1].text;
+        document.getElementById("Page-text").style.fontSize = textFontSize+"px";
+        document.getElementById("Page-text").style.margin = textMargin+"%";
+        document.getElementById("Page-text").style.color = textColor;
+
+        document.getElementById("Admin-img").value = item[1].image;
+
+
+// sorting menu
+    var tab = this.state.items;
+    var sorted = [];
+    for(var i = 0; i < tab.length; i++){
+        if(tab[i][0] === "main") {
+            sorted.push(tab[i]);
+            tab[i] = null;
+            for (var j = 0; j < tab.length; j++) {
+                if ((tab[j] != null) && (tab[j][0] === "Products")) {
+                    sorted.push(tab[j]);
+                    tab[j] = null;
+                    for(var k = 0; k < tab.length; k++)
+                        if(tab[k] != null)
+                            sorted.push(tab[k]);
+                    j=tab.length;
+                }
+            }
+            i = tab.length;
+        }
+    }
+    this.setState({
+        items: sorted
+    })
+
     }
 
   render(){
@@ -220,7 +293,7 @@ class App extends Component{
 
     return (
 
-            <div className="App">
+            <div className="App" id="App">
 
                 <div className="App-admin" id="App-admin">
 
@@ -243,9 +316,7 @@ class App extends Component{
                 </div>
                 <div className="App-body" id="Body">
                 </div>
-                <div id="sticky" className="sticky">
 
-                </div>
 
             </div>
 
@@ -253,6 +324,7 @@ class App extends Component{
 
 
     );
+
   }
 
 }
