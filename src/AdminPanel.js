@@ -9,8 +9,9 @@ const db = firebase.firestore();
 class AdminPanel extends React.Component {
 
 
-    headerSubmitHandler = (event) => {
+    submitHandler = (event) => {
         event.preventDefault();
+        var result = true;
         db.collection("header").doc("myHeader").set({
             backgroundColor: document.getElementById("App-head").style.backgroundColor,
             textColor: document.getElementById("App-text").style.color,
@@ -27,10 +28,99 @@ class AdminPanel extends React.Component {
             })
             .catch((error) => {
                 console.error("Error writing document: ", error);
+                result = false;
             });
-        
-    }
 
+
+        let title = document.getElementById("Page-title");
+        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("title").set({
+            color: title.style.color,
+            fontSize: title.style.fontSize,
+            margin: title.style.marginLeft
+        }, {merge: true})
+            .then(() => {
+                console.log("Content title successfully written!");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                result = false;
+            });
+
+        let img = document.getElementById("img");
+        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("image").set({
+            width: img.style.width,
+            height: img.style.height,
+            float: img.style.float
+        }, {merge: true})
+            .then(() => {
+                console.log("Content image successfully written!");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                result = false;
+            });
+
+
+        db.collection("pages").doc(localStorage.getItem("item")).set({
+            title: title.innerText,
+            text: document.getElementById("Page-text").innerHTML,
+            image: document.getElementById("Admin-img").value
+        }, {merge: true})
+            .then(() => {
+                console.log("Content image successfully written!");
+                var oldTitle = localStorage.getItem("oldTitle");
+                console.log(oldTitle + " stary i nowy " + title.innerText);
+                if((oldTitle != "") && (oldTitle != title.innerText)){
+                    localStorage.setItem("oldTitle", title.innerText);
+                    window.location.reload(false);
+
+                }
+
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                result = false;
+            });
+
+        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("text").set({
+            fontSize: document.getElementById("Content-textSize").value,
+            margin: document.getElementById("Content-textMargin").value,
+            color: document.getElementById("Content-textColor").value,
+
+        }, {merge: true})
+            .then(() => {
+                console.log("Content image successfully written!");
+
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                result = false;
+            });
+
+        document.getElementById("Page-text").setAttribute("contenteditable", "false");
+
+        let menuItem = Array.from(document.getElementsByClassName("App-nav-item"))[0];
+        db.collection("header").doc("menu").set({
+            backgroundColor: document.getElementById("navbar").style.backgroundColor,
+            textColor: menuItem.style.color,
+            margin: menuItem.style.padding,
+            fontSize: menuItem.style.fontSize,
+            hoverColor: document.getElementById("hoverMenuColor").value,
+            hoverBackgroundColor: document.getElementById("hoverMenuBackground").value,
+        },{ merge: true })
+            .then(() => {
+                console.log("Menu successfully written!");
+            })
+            .catch((error) => {
+                console.error("Error writing document: ", error);
+                result = false;
+            });
+
+        if(result)
+            window.alert("Changes successfully saved!");
+        else
+            window.alert("An error occurred while saving the changes");
+    }
 
 
 
@@ -57,7 +147,8 @@ class AdminPanel extends React.Component {
                 ReactDOM.render(
                     <div className="Admin-header">
 
-                        <button className="App-save" id="Save" onClick={this.headerSubmitHandler}>Save changes</button>
+                        <button className="App-delete" id="Reset" onClick={() => window.location.reload(false)}>Reset changes</button>
+                        <button className="App-save" id="Save" onClick={this.submitHandler}>Save changes</button>
 
                         <table className="ItemsTable">
                             <thead>
@@ -89,7 +180,7 @@ class AdminPanel extends React.Component {
 
 
 
-                            <tr className="details" id={"-logoTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                            <tr className="details" id={"-logoTab"} style={{background: "white"}}>
                                 <td>
 
 
@@ -144,7 +235,7 @@ class AdminPanel extends React.Component {
                                                    })
                                                }}
                                         />
-                                        <button className="App-save" id="Save" onClick={this.headerSubmitHandler}>Save header changes</button>
+
                                     </div>
                                 </td>
 
@@ -172,7 +263,7 @@ class AdminPanel extends React.Component {
                                 <td>Title</td>
                             </tr>
 
-                            <tr className="details" id={"-textTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                            <tr className="details" id={"-textTab"} style={{background: "white"}}>
                                 <td>
                                     <div className="slidecontainer">
                                         <p className="Label">Title:</p>
@@ -236,7 +327,7 @@ class AdminPanel extends React.Component {
                                                }}
                                         />
 
-                                        <button className="App-save" id="Save" onClick={this.headerSubmitHandler}>Save header changes</button>
+
                                     </div>
                                 </td>
 

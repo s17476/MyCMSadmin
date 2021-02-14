@@ -2,10 +2,9 @@
     font-family: Arial, Helvetica, sans-serif;
     border-collapse: collapse;
     width: 90%;
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .ItemsTable td, .ItemsTable th {
-
     padding: 8px;
 }
 
@@ -20,6 +19,7 @@
     color: #000000;
 }
 .ItemsTable th {
+
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
@@ -72,10 +72,12 @@
 
 }
 .App-save{
+    font-size: medium;
     padding: 7px;
     margin: auto;
-    margin-top: 15px;
-    width: 100%;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    width: 90%;
     border: none;
     border-radius: 5px;
     background-color: #366dff;
@@ -86,6 +88,7 @@
     cursor: pointer;
 }
 .App-add{
+    font-size: medium;
     padding: 7px;
     margin: auto;
     margin-top: 5px;
@@ -101,6 +104,7 @@
     cursor: pointer;
 }
 .App-delete{
+    font-size: medium;
     padding: 7px;
     margin: auto;
     margin-top: 5px;
@@ -135,6 +139,7 @@ input{
 }
 
 .App-textEdit{
+    font-size: medium;
     padding: 7px;
     margin: auto;
     margin-top: 15px;
@@ -146,5 +151,27 @@ input{
 }
 .App-textEdit:hover{
     background-color: #434343;
+    cursor: pointer;
+}
+#img {
+    margin-left: 20px;
+}
+#Reset{
+    width: 90%;
+}
+.Edit-Text{
+    font-size: medium;
+    padding: 7px;
+    margin: auto;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #366dff;
+    color: white;
+}
+.Edit-Text:hover{
+    background-color: #1646be;
     cursor: pointer;
 }

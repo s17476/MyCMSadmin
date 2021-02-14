@@ -27,71 +27,7 @@ class ContentAdminPanel extends Component {
         }
     }
 
-    contentSubmitHandler = (event) => {
-        event.preventDefault();
-        let title = document.getElementById("Page-title");
-        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("title").set({
-            color: title.style.color,
-            fontSize: title.style.fontSize,
-            margin: title.style.marginLeft
-        }, {merge: true})
-            .then(() => {
-                console.log("Content title successfully written!");
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
 
-        let img = document.getElementById("img");
-        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("image").set({
-            width: img.style.width,
-            height: img.style.height,
-            float: img.style.float
-        }, {merge: true})
-            .then(() => {
-                console.log("Content image successfully written!");
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
-
-
-        db.collection("pages").doc(localStorage.getItem("item")).set({
-            title: title.innerText,
-            text: document.getElementById("Page-text").innerHTML,
-            image: document.getElementById("Admin-img").value
-        }, {merge: true})
-            .then(() => {
-                console.log("Content image successfully written!");
-                if((this.state.oldTitle != "") && (this.state.oldTitle != title.innerText)){
-                    this.setState({
-                        oldTitle: title.innerText
-                    })
-                    window.location.reload(false);
-
-                }
-
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
-
-        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("text").set({
-            fontSize: document.getElementById("Content-textSize").value,
-            margin: document.getElementById("Content-textMargin").value,
-            color: document.getElementById("Content-textColor").value,
-
-        }, {merge: true})
-            .then(() => {
-                console.log("Content image successfully written!");
-
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
-
-        document.getElementById("Page-text").setAttribute("contenteditable", "false");
-    }
 
     async componentDidMount() {
         var contentItemRef = await db.collection("pages").doc(localStorage.getItem("item"));
@@ -148,7 +84,7 @@ class ContentAdminPanel extends Component {
 
 
 
-                                    <tr className="details" id={"-pageTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                                    <tr className="details" id={"-pageTab"} style={{background: "white"}}>
                                         <td>
                                             <div className="slidecontainer">
                                                 <button className="App-add" id="AddPage"
@@ -214,7 +150,7 @@ class ContentAdminPanel extends Component {
                                                                     });
 
 
-                                                                //localStorage.setItem("item", newPage);
+
                                                                 window.location.reload(false);
                                                             }
 
@@ -290,7 +226,7 @@ class ContentAdminPanel extends Component {
                                         <td>Title</td>
                                     </tr>
 
-                                    <tr className="details" id={"-contentTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                                    <tr className="details" id={"-contentTab"} style={{background: "white"}}>
                                         <td>
                                             <div className="slidecontainer">
 
@@ -301,9 +237,7 @@ class ContentAdminPanel extends Component {
                                                        name = "headerLogo"
                                                        onChange={(event) => {
                                                            let val = event.target.value;
-                                                           this.setState({
-                                                               oldTitle: document.getElementById("Page-title").innerText
-                                                           });
+                                                           localStorage.setItem("oldTitle", document.getElementById("Page-title").innerText);
                                                            document.getElementById("Page-title").innerText = val;
 
                                                        }}
@@ -311,7 +245,7 @@ class ContentAdminPanel extends Component {
 
 
                                                 <p className="Label">Text size:</p>
-                                                <input type="range" min="8" max="80" id="Title-textSize"
+                                                <input type="range" min="8" max="100" id="Title-textSize"
                                                        defaultValue={doc.data().fontSize.split("px")[0]}
                                                        name="fontSize"
                                                        onChange={(event) => {
@@ -338,9 +272,7 @@ class ContentAdminPanel extends Component {
                                                        }}
                                                 />
 
-                                                <button className="App-save" id="Save"
-                                                        onClick={this.contentSubmitHandler}>Save content changes
-                                                </button>
+
 
 
                                             </div>
@@ -369,7 +301,7 @@ class ContentAdminPanel extends Component {
                                         <td>Image</td>
                                     </tr>
 
-                                    <tr className="details" id={"-contentImgTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                                    <tr className="details" id={"-contentImgTab"} style={{background: "white"}}>
                                         <td>
                                             <div className="slidecontainer">
 
@@ -422,9 +354,7 @@ class ContentAdminPanel extends Component {
                                                         }}>Right
                                                 </button>
 
-                                                <button className="App-save" id="Save"
-                                                        onClick={this.contentSubmitHandler}>Save content changes
-                                                </button>
+
 
 
                                             </div>
@@ -478,11 +408,11 @@ class ContentAdminPanel extends Component {
                                         <td>Text content</td>
                                     </tr>
 
-                                    <tr className="details" id={"-textContentTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                                    <tr className="details" id={"-textContentTab"} style={{background: "white"}}>
                                         <td>
                                             <div className="slidecontainer">
 
-                                                <button className="App-save" id="Edit-Text"
+                                                <button className="Edit-Text" id="Edit-Text"
                                                         onClick={() => {
                                                             document.getElementById("Page-text").setAttribute("contenteditable", "true");
                                                         }}>Edit text
@@ -537,9 +467,7 @@ class ContentAdminPanel extends Component {
 
 
 
-                                                <button className="App-save" id="Save"
-                                                        onClick={this.contentSubmitHandler}>Save content changes
-                                                </button>
+
 
 
                                             </div>

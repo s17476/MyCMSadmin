@@ -13,6 +13,7 @@ class App extends Component{
         loaded: false,
         currentItem: [],
         items: [],
+        products: []
     };
     this.clickHandler = this.clickHandler.bind(this);
   }
@@ -30,6 +31,8 @@ class App extends Component{
 
   async componentDidMount() {
     var items = [];
+    var products = [];
+
 
 
     //load header
@@ -71,6 +74,20 @@ class App extends Component{
         items: items
       });
     })
+
+
+      //load products menu and products
+      var productsRef = await db.collection("pages").doc("Products").collection("pages");
+      productsRef.get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+
+              products.push([doc.id, doc.data()]);
+          })
+          this.setState({
+              products: products
+          });
+          console.log(products);
+      });
 
       //load menu style propeteries
       var menuRef = await db.collection("header").doc("menu");
@@ -147,6 +164,7 @@ class App extends Component{
     async clickHandler(item){
 //image CSS
         await this.setItemId(item);
+        localStorage.setItem("oldTitle", item[1].title);
         let imgWidth, imgHeight, imgFloat;
         await db.collection("pages")
             .doc(item[0])
@@ -236,7 +254,8 @@ class App extends Component{
                 <h1 id="Page-title" style={{
                     color: color,
                     fontSize: fontSize,
-                    marginLeft: margin
+                    margin: "5px",
+                    marginLeft: margin,
                 }}>{item[1].title}</h1>
                 <img
                     src={item[1].image}
@@ -315,6 +334,7 @@ class App extends Component{
                     ))}
 
                 </div>
+                
                 <div className="App-body" id="Body">
                 </div>
 

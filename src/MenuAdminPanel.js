@@ -8,25 +8,7 @@ const db = firebase.firestore();
 
 class MenuAdminPanel extends React.Component {
 
-    menuSubmitHandler = (event) => {
-        event.preventDefault();
-        let menuItem = Array.from(document.getElementsByClassName("App-nav-item"))[0];
-        db.collection("header").doc("menu").set({
-            backgroundColor: document.getElementById("navbar").style.backgroundColor,
-            textColor: menuItem.style.color,
-            margin: menuItem.style.padding,
-            fontSize: menuItem.style.fontSize,
-            hoverColor: document.getElementById("hoverMenuColor").value,
-            hoverBackgroundColor: document.getElementById("hoverMenuBackground").value,
-        },{ merge: true })
-            .then(() => {
-                console.log("Menu successfully written!");
-            })
-            .catch((error) => {
-                console.error("Error writing document: ", error);
-            });
 
-    }
 
     rgbToHex(col)
     {
@@ -97,7 +79,7 @@ class MenuAdminPanel extends React.Component {
                                 <td>Menu</td>
                             </tr>
 
-                            <tr className="details" id={"-menuTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
+                            <tr className="details" id={"-menuTab"} style={{background: "white"}}>
                                 <td>
                                     <div className="slidecontainer">
 
@@ -195,7 +177,7 @@ class MenuAdminPanel extends React.Component {
                                                }}
                                         />
 
-                                        <button className="App-save" id="Save" onClick={this.menuSubmitHandler}>Save menu changes</button>
+
 
 
                                     </div>
