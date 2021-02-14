@@ -67,8 +67,8 @@ class MenuAdminPanel extends React.Component {
                                 }
                                 else{
                                     e.style.display = 'table-row';
-                                    thisElement.style.border = '2px solid black';
-                                    e.style.border = '2px solid black';
+                                    thisElement.style.border = '2px solid #3662d9';
+                                    e.style.border = '2px solid #3662d9';
                                     thisElement.style.borderBottom = 'none';
                                     e.style.borderTop = 'none';
 
@@ -97,7 +97,7 @@ class MenuAdminPanel extends React.Component {
                                 <td>Menu</td>
                             </tr>
 
-                            <tr className="details" id={"-menuTab"}>
+                            <tr className="details" id={"-menuTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                 <td>
                                     <div className="slidecontainer">
 

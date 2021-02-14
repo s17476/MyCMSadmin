@@ -50,23 +50,17 @@
   cursor: pointer;
 }
 
-.App-admin{
-  height: 100%;
-  width: 15%;
-  float: right;
-
-}
 #img{
   margin: 10px;
 }
-.sticky {
-  background-color: #e71111;
-  width: 100%;
-  height: 0px;
-  position: absolute;
-  left: 0px;
-  top: -40px;
-  transition: 0.5s;
-  margin-top: 40px;
+.App-admin {
+  position: fixed;
+  background-color: #ffffff;
+  height: 100%;
+  width: 15%;
+  left: 86%;
+  top: 0px;
+  right: 0px;
   padding: 0px;
+  overflow: scroll;
 }

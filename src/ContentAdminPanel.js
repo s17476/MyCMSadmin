@@ -132,8 +132,8 @@ class ContentAdminPanel extends Component {
                                             thisElement.style.border = 'none';
                                         } else {
                                             e.style.display = 'table-row';
-                                            thisElement.style.border = '2px solid black';
-                                            e.style.border = '2px solid black';
+                                            thisElement.style.border = '2px solid #3662d9';
+                                            e.style.border = '2px solid #3662d9';
                                             thisElement.style.borderBottom = 'none';
                                             e.style.borderTop = 'none';
 
@@ -148,7 +148,7 @@ class ContentAdminPanel extends Component {
 
 
 
-                                    <tr className="details" id={"-pageTab"}>
+                                    <tr className="details" id={"-pageTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                         <td>
                                             <div className="slidecontainer">
                                                 <button className="App-add" id="AddPage"
@@ -279,8 +279,8 @@ class ContentAdminPanel extends Component {
                                             thisElement.style.border = 'none';
                                         } else {
                                             e.style.display = 'table-row';
-                                            thisElement.style.border = '2px solid black';
-                                            e.style.border = '2px solid black';
+                                            thisElement.style.border = '2px solid #3662d9';
+                                            e.style.border = '2px solid #3662d9';
                                             thisElement.style.borderBottom = 'none';
                                             e.style.borderTop = 'none';
 
@@ -290,7 +290,7 @@ class ContentAdminPanel extends Component {
                                         <td>Title</td>
                                     </tr>
 
-                                    <tr className="details" id={"-contentTab"}>
+                                    <tr className="details" id={"-contentTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                         <td>
                                             <div className="slidecontainer">
 
@@ -321,7 +321,7 @@ class ContentAdminPanel extends Component {
                                                 />
 
                                                 <p className="Label">Text margin:</p>
-                                                <input type="range" min="0" max="100" id="Title-textMargin"
+                                                <input type="range" min="0" max="80" id="Title-textMargin"
                                                        defaultValue={doc.data().margin.split("%")[0]}
                                                        name="textMargin"
                                                        onChange={(event) => {
@@ -358,8 +358,8 @@ class ContentAdminPanel extends Component {
                                             thisElement.style.border = 'none';
                                         } else {
                                             e.style.display = 'table-row';
-                                            thisElement.style.border = '2px solid black';
-                                            e.style.border = '2px solid black';
+                                            thisElement.style.border = '2px solid #3662d9';
+                                            e.style.border = '2px solid #3662d9';
                                             thisElement.style.borderBottom = 'none';
                                             e.style.borderTop = 'none';
 
@@ -369,7 +369,7 @@ class ContentAdminPanel extends Component {
                                         <td>Image</td>
                                     </tr>
 
-                                    <tr className="details" id={"-contentImgTab"}>
+                                    <tr className="details" id={"-contentImgTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                         <td>
                                             <div className="slidecontainer">
 
@@ -465,8 +465,8 @@ class ContentAdminPanel extends Component {
                                             thisElement.style.border = 'none';
                                         } else {
                                             e.style.display = 'table-row';
-                                            thisElement.style.border = '2px solid black';
-                                            e.style.border = '2px solid black';
+                                            thisElement.style.border = '2px solid #3662d9';
+                                            e.style.border = '2px solid #3662d9';
                                             thisElement.style.borderBottom = 'none';
                                             e.style.borderTop = 'none';
 
@@ -478,7 +478,7 @@ class ContentAdminPanel extends Component {
                                         <td>Text content</td>
                                     </tr>
 
-                                    <tr className="details" id={"-textContentTab"}>
+                                    <tr className="details" id={"-textContentTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                         <td>
                                             <div className="slidecontainer">
 

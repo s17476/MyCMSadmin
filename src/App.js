@@ -14,6 +14,7 @@ class App extends Component{
         currentItem: [],
         items: [],
     };
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   componentDidUpdate(){

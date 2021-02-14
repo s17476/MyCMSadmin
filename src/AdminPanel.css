@@ -23,10 +23,11 @@
     padding-top: 12px;
     padding-bottom: 12px;
     text-align: left;
-    background-color: #a2a1a1;
+    background-color: #3662d9;
     color: white;
 
 }
+
 .id{
     width: 7%;
 }
@@ -68,6 +69,7 @@
 .tabRow{
     cursor: pointer;
     background-color: white;
+
 }
 .App-save{
     padding: 7px;

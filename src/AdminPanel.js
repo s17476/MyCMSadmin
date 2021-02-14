@@ -56,8 +56,12 @@ class AdminPanel extends React.Component {
             .then((doc) => {
                 ReactDOM.render(
                     <div className="Admin-header">
+
+                        <button className="App-save" id="Save" onClick={this.headerSubmitHandler}>Save changes</button>
+
                         <table className="ItemsTable">
                             <thead>
+
                             <tr>
                                 <th id="th-id">HEADER</th>
                             </tr>
@@ -73,8 +77,8 @@ class AdminPanel extends React.Component {
                                 }
                                 else{
                                     e.style.display = 'table-row';
-                                    thisElement.style.border = '2px solid black';
-                                    e.style.border = '2px solid black';
+                                    thisElement.style.border = '2px solid #3662d9';
+                                    e.style.border = '2px solid #3662d9';
                                     thisElement.style.borderBottom = 'none';
                                     e.style.borderTop = 'none';
 
@@ -85,7 +89,7 @@ class AdminPanel extends React.Component {
 
 
 
-                            <tr className="details" id={"-logoTab"}>
+                            <tr className="details" id={"-logoTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                 <td>
 
 
@@ -154,11 +158,12 @@ class AdminPanel extends React.Component {
                                     e.style.display = 'none';
                                     thisElement.style.border = 'none';
                                     thisElement.style.border = 'none';
+
                                 }
                                 else{
                                     e.style.display = 'table-row';
-                                    thisElement.style.border = '2px solid black';
-                                    e.style.border = '2px solid black';
+                                    thisElement.style.border = '2px solid #3662d9';
+                                    e.style.border = '2px solid #3662d9';
                                     thisElement.style.borderBottom = 'none';
                                     e.style.borderTop = 'none';
 
@@ -167,7 +172,7 @@ class AdminPanel extends React.Component {
                                 <td>Title</td>
                             </tr>
 
-                            <tr className="details" id={"-textTab"}>
+                            <tr className="details" id={"-textTab"} onMouseEnter={event => event.target.style.backgroundColor = "white"}>
                                 <td>
                                     <div className="slidecontainer">
                                         <p className="Label">Title:</p>
