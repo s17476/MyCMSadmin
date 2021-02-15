@@ -15,13 +15,15 @@ class App extends Component{
         items: [],
         products: []
     };
-    this.clickHandler = this.clickHandler.bind(this);
+      localStorage.setItem("product", "false");
+      localStorage.setItem("item", "main");
   }
 
   componentDidUpdate(){
       //open main page onLoad
       if((document.getElementById("main") != null) && (this.state.loaded === false)){
           document.getElementById("main").click();
+          localStorage.setItem("product", "false");
           localStorage.setItem("item", "main");
           this.setState({
               loaded: true
@@ -87,6 +89,7 @@ class App extends Component{
               products: products
           });
           console.log(products);
+          console.log(this.state.items);
       });
 
       //load menu style propeteries
@@ -160,11 +163,27 @@ class App extends Component{
           currentItem: item
       });
   }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     async clickHandler(item){
 //image CSS
+        localStorage.setItem("item", item[0]);
         await this.setItemId(item);
         localStorage.setItem("oldTitle", item[1].title);
+        if(localStorage.getItem("item") === "Products"){
+           // document.getElementById("productNavbar").style.display = "block";
+            localStorage.setItem("product", "true");
+            console.log("ON     ON     ON     ON   products  ");
+        }
+
+        else{
+            //document.getElementById("productNavbar").style.display = "none";
+            localStorage.setItem("product", "false");
+            console.log("OFF     OFF     OFF     OFF     OFF     OFF     OFF     ");
+        }
+
+
+
+
         let imgWidth, imgHeight, imgFloat;
         await db.collection("pages")
             .doc(item[0])
@@ -209,6 +228,7 @@ class App extends Component{
                     document.getElementById("Title-textSize").value = fontSize.split("px")[0];
                     document.getElementById("Title-textMargin").value = margin.split("%")[0];
                     document.getElementById("Title-pageTitle").value = item[1].title;
+
                 }
 
             }).catch((error) => {
@@ -279,6 +299,9 @@ class App extends Component{
         document.getElementById("Page-text").style.margin = textMargin+"%";
         document.getElementById("Page-text").style.color = textColor;
 
+
+        console.log(item[1].image);
+
         document.getElementById("Admin-img").value = item[1].image;
 
 
@@ -308,8 +331,166 @@ class App extends Component{
 
     }
 
-  render(){
+    //products click handler ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    async productClickHandler(item){
+//image CSS
+        localStorage.setItem("item", item[0]);
+        await this.setItemId(item);
+        localStorage.setItem("oldTitle", item[1].title);
+
+ //       if((localStorage.getItem("item") === "Products") || (localStorage.getItem("product") === "true")){
+ //           document.getElementById("productNavbar").style.display = "block";
+            localStorage.setItem("product", "true");
+            console.log("ON     ON     ON     ON     ");
+  //      }
+
+   //     else{
+   //         document.getElementById("productNavbar").style.display = "none";
+   //         localStorage.setItem("product", "false");
+   //         console.log("OFF     OFF     OFF     OFF     OFF     OFF     OFF czemu     ");
+    //    }
+
+        let imgWidth, imgHeight, imgFloat;
+        await db.collection("pages")
+            .doc("Products")
+            .collection("pages")
+            .doc(item[0])
+            .collection("style")
+            .doc("image")
+            .get()
+            .then((doc) => {
+                imgWidth = doc.data().width;
+                imgHeight = doc.data().height;
+                imgFloat = doc.data().float;
+
+                if(document.getElementById("Image-height") != null){
+                    document.getElementById("Image-height").value = imgHeight.split("px")[0];
+                    document.getElementById("Image-width").value = imgWidth.split("px")[0];
+                    if(imgFloat === "right"){
+                        document.getElementById("right").style.backgroundColor = "#00b100";
+                        document.getElementById("left").style.backgroundColor = "#9b9a9a";
+                    }else{
+                        document.getElementById("left").style.backgroundColor = "#00b100";
+                        document.getElementById("right").style.backgroundColor = "#9b9a9a";
+                    }
+                }
+
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+        let color, fontSize, margin;
+        await db.collection("pages")
+            .doc("Products")
+            .collection("pages")
+            .doc(item[0])
+            .collection("style")
+            .doc("title")
+            .get()
+            .then((doc) => {
+                color = doc.data().color;
+                fontSize = doc.data().fontSize;
+                margin = doc.data().margin;
+
+                if(document.getElementById("pageTextColor") != null){
+                    document.getElementById("pageTextColor").value = this.rgbToHex(color);
+                    document.getElementById("Title-textSize").value = fontSize.split("px")[0];
+                    document.getElementById("Title-textMargin").value = margin.split("%")[0];
+                    document.getElementById("Title-pageTitle").value = item[1].title;
+                }
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+
+        let textColor, textFontSize, textMargin;
+        await db.collection("pages")
+            .doc("Products")
+            .collection("pages")
+            .doc(item[0])
+            .collection("style")
+            .doc("text")
+            .get()
+            .then((doc) => {
+                textColor = doc.data().color;
+                textFontSize = doc.data().fontSize;
+                textMargin = doc.data().margin;
+
+                if(document.getElementById("Content-textSize") != null){
+                    document.getElementById("Content-textSize").value = textFontSize.split("px")[0];
+                    document.getElementById("Content-textMargin").value = textMargin.split("%")[0];
+                    document.getElementById("Content-textColor").value = textColor;
+
+
+
+
+
+
+                }
+
+            }).catch((error) => {
+                console.log(error);
+            });
+
+
+
+
+
+        //build
+
+        ReactDOM.render(
+
+            <div className="App-page" id="Page">
+                <h1 id="Page-title" style={{
+                    color: color,
+                    fontSize: fontSize,
+                    margin: "5px",
+                    marginLeft: margin,
+                }}>{item[1].title}</h1>
+                <img
+                    src={item[1].image}
+                    id="img"
+                    alt=""
+
+                    style={{
+                        width: imgWidth,
+                        height: imgHeight,
+                        float: imgFloat
+                    }}
+                />
+                <p id="Page-text" style={{
+
+                }}></p>
+            </div>
+            ,document.getElementById("Body"));
+        document.getElementById("Page-text").setAttribute("contenteditable", "false");
+        document.getElementById("Page-text").innerHTML = item[1].text;
+        document.getElementById("Page-text").style.fontSize = textFontSize+"px";
+        document.getElementById("Page-text").style.margin = textMargin+"%";
+        document.getElementById("Page-text").style.color = textColor;
+
+        console.log(document.getElementById("Admin-img").value);
+
+
+        document.getElementById("Admin-img").value = item[1].image;
+
+
+
+
+    }
+
+
+
+
+
+
+  render(){
+      localStorage.setItem("product", "false");
 
     return (
 
@@ -334,8 +515,25 @@ class App extends Component{
                     ))}
 
                 </div>
-                
-                <div className="App-body" id="Body">
+                <div>
+                    <div className="App-nav" id="productNavbar">
+                        {this.state.products.map(product => {
+                            if((localStorage.getItem("item") === "Products") || (localStorage.getItem("product") === "true")) {
+                                console.log("local storage ", product[0]);
+                                return (
+                                    <div>
+                                        <a className="App-nav-item-h" id={product[0]} onClick={async () => {
+                                            await this.productClickHandler(product);
+
+                                        }}>{product[1].title}</a>
+                                    </div>
+                                )
+                            }
+                        })}
+
+                    </div>
+                    <div className="App-body" id="Body">
+                    </div>
                 </div>
 
 

@@ -9,8 +9,20 @@ const db = firebase.firestore();
 class AdminPanel extends React.Component {
 
 
+
+
     submitHandler = (event) => {
         event.preventDefault();
+
+        var dataRef;
+
+        if(localStorage.getItem("product") === "false"){
+            console.log("nie produkt.................")
+            dataRef = db;
+        }else{
+            dataRef = db.collection("pages").doc("Products");
+        }
+
         var result = true;
         db.collection("header").doc("myHeader").set({
             backgroundColor: document.getElementById("App-head").style.backgroundColor,
@@ -33,7 +45,7 @@ class AdminPanel extends React.Component {
 
 
         let title = document.getElementById("Page-title");
-        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("title").set({
+        dataRef.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("title").set({
             color: title.style.color,
             fontSize: title.style.fontSize,
             margin: title.style.marginLeft
@@ -47,7 +59,7 @@ class AdminPanel extends React.Component {
             });
 
         let img = document.getElementById("img");
-        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("image").set({
+        dataRef.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("image").set({
             width: img.style.width,
             height: img.style.height,
             float: img.style.float
@@ -61,7 +73,7 @@ class AdminPanel extends React.Component {
             });
 
 
-        db.collection("pages").doc(localStorage.getItem("item")).set({
+        dataRef.collection("pages").doc(localStorage.getItem("item")).set({
             title: title.innerText,
             text: document.getElementById("Page-text").innerHTML,
             image: document.getElementById("Admin-img").value
@@ -82,7 +94,7 @@ class AdminPanel extends React.Component {
                 result = false;
             });
 
-        db.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("text").set({
+        dataRef.collection("pages").doc(localStorage.getItem("item")).collection("style").doc("text").set({
             fontSize: document.getElementById("Content-textSize").value,
             margin: document.getElementById("Content-textMargin").value,
             color: document.getElementById("Content-textColor").value,

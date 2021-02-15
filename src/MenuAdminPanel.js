@@ -133,6 +133,7 @@ class MenuAdminPanel extends React.Component {
                                                    let val = event.target.value;
 
                                                    document.getElementById("navbar").style.backgroundColor = val;
+                                                   //document.getElementById("productNavbar").style.backgroundColor = val;
                                                    var menuItems = document.getElementsByClassName("App-nav-item");
 
                                                    Array.from(menuItems).forEach((item) => {
