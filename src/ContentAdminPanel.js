@@ -384,7 +384,7 @@ class ContentAdminPanel extends Component {
                                                 <button className="App-textEdit" id="Underline"
                                                         onClick={() => {
                                                             document.execCommand("underline");
-                                                        }}><u>Underscore</u>
+                                                        }}><u>Underline</u>
                                                 </button>
                                                 <button className="App-textEdit" id="Justify"
                                                         onClick={() => {
