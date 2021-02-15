@@ -33,7 +33,7 @@ class ContentAdminPanel extends Component {
         var dataRef;
 
         if(localStorage.getItem("product") === "false"){
-            console.log("nie produkt.................")
+            console.log("nie produkt.................");
             dataRef = db;
         }else{
             dataRef = db.collection("pages").doc("Products");

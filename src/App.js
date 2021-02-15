@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import {Link} from "react-router-dom";
 import './App.css';
 import firebase from './Firebase';
 import AdminPanel from "./AdminPanel";
@@ -29,6 +28,20 @@ class App extends Component{
               loaded: true
           })
       }
+      localStorage.setItem("product", "false");
+      document.getElementById("Products")
+          .addEventListener('mouseenter', () => document.getElementById("productNavbar")
+              .style.visibility = "visible");
+
+
+      window.addEventListener("click", async() => {
+          document.getElementById("productNavbar")
+              .style.visibility = "hidden"
+      });
+
+      document.getElementById("Products", () => {
+          localStorage.setItem("product", "true");
+      });
   }
 
   async componentDidMount() {
@@ -88,8 +101,7 @@ class App extends Component{
           this.setState({
               products: products
           });
-          console.log(products);
-          console.log(this.state.items);
+
       });
 
       //load menu style propeteries
@@ -97,8 +109,7 @@ class App extends Component{
       menuRef.get()
           .then((doc) => {
               var menu = document.getElementById("navbar");
-
-
+              var productMenu = document.getElementById("productNavbar");
 
               var menuItems = document.getElementsByClassName("App-nav-item");
 
@@ -110,6 +121,7 @@ class App extends Component{
               var hoverBackgroundColor = doc.data().hoverBackgroundColor;
 
               menu.style.backgroundColor = backgroundColor;
+              productMenu.style.backgroundColor = backgroundColor;
 
               Array.from(menuItems).forEach((item) => {
                   item.style.color = color;
@@ -299,9 +311,6 @@ class App extends Component{
         document.getElementById("Page-text").style.margin = textMargin+"%";
         document.getElementById("Page-text").style.color = textColor;
 
-
-        console.log(item[1].image);
-
         document.getElementById("Admin-img").value = item[1].image;
 
 
@@ -482,6 +491,13 @@ class App extends Component{
 
 
 
+
+
+
+
+
+
+
     }
 
 
@@ -490,7 +506,8 @@ class App extends Component{
 
 
   render(){
-      localStorage.setItem("product", "false");
+
+
 
     return (
 
@@ -515,26 +532,26 @@ class App extends Component{
                     ))}
 
                 </div>
-                <div>
-                    <div className="App-nav" id="productNavbar">
+
+                    <div className="App-nav" id="productNavbar" style={{visibility: "hidden"}}>
                         {this.state.products.map(product => {
-                            if((localStorage.getItem("item") === "Products") || (localStorage.getItem("product") === "true")) {
+
                                 console.log("local storage ", product[0]);
                                 return (
                                     <div>
-                                        <a className="App-nav-item-h" id={product[0]} onClick={async () => {
+                                        <a className="App-nav-item" id={product[0]} onClick={async () => {
                                             await this.productClickHandler(product);
 
                                         }}>{product[1].title}</a>
                                     </div>
                                 )
-                            }
+
                         })}
 
                     </div>
                     <div className="App-body" id="Body">
                     </div>
-                </div>
+
 
 
             </div>

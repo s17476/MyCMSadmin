@@ -93,6 +93,7 @@ class MenuAdminPanel extends React.Component {
 
                                                    Array.from(menuItems).forEach((item) => {
                                                        item.style.fontSize = val+"px";
+                                                       console.log(item);
 
                                                    });
                                                }}

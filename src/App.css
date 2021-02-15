@@ -72,3 +72,12 @@
   padding: 0px;
   overflow: scroll;
 }
+#productNavbar{
+  z-index: 1;
+  position: absolute;
+    left: 0;
+    top: 32%;
+  width: 25%;
+
+}
+
