@@ -537,13 +537,18 @@ class App extends Component{
                         {this.state.products.map(product => {
 
                                 console.log("local storage ", product[0]);
+
                                 return (
-                                    <div>
-                                        <a className="App-nav-item" id={product[0]} onClick={async () => {
+                                    <ul>
+
+                                    <li>
+                                        <a className="App-nav-item" id={product[0]} style={{width: "100%", display:"inline"}} onClick={async () => {
                                             await this.productClickHandler(product);
 
                                         }}>{product[1].title}</a>
-                                    </div>
+
+                                        </li>
+                                    </ul>
                                 )
 
                         })}

@@ -73,11 +73,23 @@
   overflow: scroll;
 }
 #productNavbar{
+  margin: 0;
+  padding: 0;
   z-index: 1;
   position: absolute;
     left: 0;
-    top: 32%;
+    top: 31%;
   width: 25%;
+text-align: left;
 
 }
-
+ul{
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden;
+  text-align: left;
+}
+li {
+  float: bottom;
+}
