@@ -5,6 +5,7 @@ import firebase from './Firebase';
 import AdminPanel from "./AdminPanel";
 const db = firebase.firestore();
 
+
 class App extends Component{
   constructor(props) {
     super(props);
@@ -18,8 +19,11 @@ class App extends Component{
       localStorage.setItem("item", "main");
   }
 
+
   componentDidUpdate(){
+
       //open main page onLoad
+
       if((document.getElementById("main") != null) && (this.state.loaded === false)){
           document.getElementById("main").click();
           localStorage.setItem("product", "false");
@@ -28,11 +32,13 @@ class App extends Component{
               loaded: true
           })
       }
+
+      //show and hide rulles for products menu
+
       localStorage.setItem("product", "false");
       document.getElementById("Products")
           .addEventListener('mouseenter', () => document.getElementById("productNavbar")
               .style.visibility = "visible");
-
 
       window.addEventListener("click", async() => {
           document.getElementById("productNavbar")
@@ -44,13 +50,15 @@ class App extends Component{
       });
   }
 
+
+  //startup setup
+
   async componentDidMount() {
     var items = [];
     var products = [];
 
+    //load header data and style
 
-
-    //load header
     var headerRef = await db.collection("header").doc("myHeader");
     headerRef.get()
         .then((doc) => {
@@ -78,20 +86,21 @@ class App extends Component{
           console.log(error);
         });
 
-    //load menu and pages
-    var pagesRef = await db.collection("pages");
-    pagesRef.get().then((querySnapshot) => {
-      querySnapshot.forEach((doc) => {
+        //load pages
 
-        items.push([doc.id, doc.data()]);
-      })
-      this.setState({
-        items: items
-      });
-    })
+        var pagesRef = await db.collection("pages");
+        pagesRef.get().then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            items.push([doc.id, doc.data()]);
+          })
+          this.setState({
+            items: items
+          });
+        })
 
 
-      //load products menu and products
+      //load products pages from Db
+
       var productsRef = await db.collection("pages").doc("Products").collection("pages");
       productsRef.get().then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
@@ -101,10 +110,10 @@ class App extends Component{
           this.setState({
               products: products
           });
-
       });
 
-      //load menu style propeteries
+      //load menu and submenu style
+
       var menuRef = await db.collection("header").doc("menu");
       menuRef.get()
           .then((doc) => {
@@ -142,19 +151,14 @@ class App extends Component{
               console.log(error);
           });
 
-
-
       //load admin panel
       ReactDOM.render(
           <AdminPanel />,
           document.getElementById("App-admin")
       )
-
-
-
-
-
   }
+
+    // color format converter rgb(r, g, b) => #ffffff
 
     rgbToHex(col)
     {
@@ -170,31 +174,32 @@ class App extends Component{
         }
     }
 
-  async setItemId(item){
-      this.setState({
-          currentItem: item
-      });
-  }
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // set current page
+
+      async setItemId(item){
+          this.setState({
+              currentItem: item
+          });
+      }
+
+
+    // menu buttons click handler
+
     async clickHandler(item){
-//image CSS
+
         localStorage.setItem("item", item[0]);
         await this.setItemId(item);
         localStorage.setItem("oldTitle", item[1].title);
+
         if(localStorage.getItem("item") === "Products"){
-           // document.getElementById("productNavbar").style.display = "block";
             localStorage.setItem("product", "true");
-            console.log("ON     ON     ON     ON   products  ");
         }
-
         else{
-            //document.getElementById("productNavbar").style.display = "none";
             localStorage.setItem("product", "false");
-            console.log("OFF     OFF     OFF     OFF     OFF     OFF     OFF     ");
         }
 
-
-
+        //load image style from DB
 
         let imgWidth, imgHeight, imgFloat;
         await db.collection("pages")
@@ -218,11 +223,11 @@ class App extends Component{
                         document.getElementById("right").style.backgroundColor = "#9b9a9a";
                     }
                 }
-
-
             }).catch((error) => {
                 console.log(error);
             });
+
+        //load title style from DB
 
         let color, fontSize, margin;
         await db.collection("pages")
@@ -240,13 +245,12 @@ class App extends Component{
                     document.getElementById("Title-textSize").value = fontSize.split("px")[0];
                     document.getElementById("Title-textMargin").value = margin.split("%")[0];
                     document.getElementById("Title-pageTitle").value = item[1].title;
-
                 }
-
             }).catch((error) => {
                 console.log(error);
             });
 
+        //load content text style from DB
 
         let textColor, textFontSize, textMargin;
         await db.collection("pages")
@@ -263,23 +267,13 @@ class App extends Component{
                     document.getElementById("Content-textSize").value = textFontSize.split("px")[0];
                     document.getElementById("Content-textMargin").value = textMargin.split("%")[0];
                     document.getElementById("Content-textColor").value = textColor;
-
-
-
-
-
-
                 }
-
             }).catch((error) => {
                 console.log(error);
             });
 
+        //build pages
 
-
-
-
-        //build
         localStorage.setItem("item", item[0]);
         ReactDOM.render(
             <div className="App-page" id="Page">
@@ -300,11 +294,12 @@ class App extends Component{
                         float: imgFloat
                     }}
                 />
-                <p id="Page-text" style={{
-
-                }}></p>
+                <p id="Page-text" style={{}}></p>
             </div>
             ,document.getElementById("Body"));
+
+        //update content admin panel
+
         document.getElementById("Page-text").setAttribute("contenteditable", "false");
         document.getElementById("Page-text").innerHTML = item[1].text;
         document.getElementById("Page-text").style.fontSize = textFontSize+"px";
@@ -314,7 +309,8 @@ class App extends Component{
         document.getElementById("Admin-img").value = item[1].image;
 
 
-// sorting menu
+    // sorting menu - Home and products on front
+
     var tab = this.state.items;
     var sorted = [];
     for(var i = 0; i < tab.length; i++){
@@ -332,35 +328,25 @@ class App extends Component{
                 }
             }
             i = tab.length;
+         }
         }
-    }
-    this.setState({
-        items: sorted
-    })
-
+        this.setState({
+            items: sorted
+        });
     }
 
-    //products click handler ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // submenu buttons click handler
 
     async productClickHandler(item){
-//image CSS
+
+        // flags
+
         localStorage.setItem("item", item[0]);
         await this.setItemId(item);
         localStorage.setItem("oldTitle", item[1].title);
+        localStorage.setItem("product", "true");
 
- //       if((localStorage.getItem("item") === "Products") || (localStorage.getItem("product") === "true")){
- //           document.getElementById("productNavbar").style.display = "block";
-            localStorage.setItem("product", "true");
-            console.log("ON     ON     ON     ON     ");
-  //      }
-
-   //     else{
-   //         document.getElementById("productNavbar").style.display = "none";
-   //         localStorage.setItem("product", "false");
-   //         console.log("OFF     OFF     OFF     OFF     OFF     OFF     OFF czemu     ");
-    //    }
+        //image style
 
         let imgWidth, imgHeight, imgFloat;
         await db.collection("pages")
@@ -386,11 +372,11 @@ class App extends Component{
                         document.getElementById("right").style.backgroundColor = "#9b9a9a";
                     }
                 }
-
-
             }).catch((error) => {
                 console.log(error);
             });
+
+        //page title style
 
         let color, fontSize, margin;
         await db.collection("pages")
@@ -404,18 +390,17 @@ class App extends Component{
                 color = doc.data().color;
                 fontSize = doc.data().fontSize;
                 margin = doc.data().margin;
-
                 if(document.getElementById("pageTextColor") != null){
                     document.getElementById("pageTextColor").value = this.rgbToHex(color);
                     document.getElementById("Title-textSize").value = fontSize.split("px")[0];
                     document.getElementById("Title-textMargin").value = margin.split("%")[0];
                     document.getElementById("Title-pageTitle").value = item[1].title;
                 }
-
             }).catch((error) => {
                 console.log(error);
             });
 
+        // content text style
 
         let textColor, textFontSize, textMargin;
         await db.collection("pages")
@@ -429,31 +414,18 @@ class App extends Component{
                 textColor = doc.data().color;
                 textFontSize = doc.data().fontSize;
                 textMargin = doc.data().margin;
-
                 if(document.getElementById("Content-textSize") != null){
                     document.getElementById("Content-textSize").value = textFontSize.split("px")[0];
                     document.getElementById("Content-textMargin").value = textMargin.split("%")[0];
                     document.getElementById("Content-textColor").value = textColor;
-
-
-
-
-
-
                 }
-
             }).catch((error) => {
                 console.log(error);
             });
 
-
-
-
-
-        //build
+        //build product pages
 
         ReactDOM.render(
-
             <div className="App-page" id="Page">
                 <h1 id="Page-title" style={{
                     color: color,
@@ -472,11 +444,12 @@ class App extends Component{
                         float: imgFloat
                     }}
                 />
-                <p id="Page-text" style={{
-
-                }}></p>
+                <p id="Page-text" style={{}}></p>
             </div>
             ,document.getElementById("Body"));
+
+        //update content admin panel
+
         document.getElementById("Page-text").setAttribute("contenteditable", "false");
         document.getElementById("Page-text").innerHTML = item[1].text;
         document.getElementById("Page-text").style.fontSize = textFontSize+"px";
@@ -484,45 +457,17 @@ class App extends Component{
         document.getElementById("Page-text").style.color = textColor;
 
         console.log(document.getElementById("Admin-img").value);
-
-
         document.getElementById("Admin-img").value = item[1].image;
-
-
-
-
-
-
-
-
-
-
-
     }
 
-
-
-
-
-
   render(){
-
-
-
     return (
-
             <div className="App" id="App">
-
-                <div className="App-admin" id="App-admin">
-
-                </div>
-
+                <div className="App-admin" id="App-admin"></div>
                 <header className="App-header" id="App-header">
-
-
                 </header>
                 <div className="App-nav" id="navbar">
-                    {this.state.items.map(item => (
+                    {this.state.items.map(item => (             //main menu
                         <div>
                             <a className="App-nav-item" id={item[0]} onClick={ async () => {
                                 await this.clickHandler(item);
@@ -530,44 +475,31 @@ class App extends Component{
                             }}>{item[1].title}</a>
                         </div>
                     ))}
-
                 </div>
 
+
+
                     <div className="App-nav" id="productNavbar" style={{visibility: "hidden"}}>
-                        {this.state.products.map(product => {
-
-                                console.log("local storage ", product[0]);
-
+                        {this.state.products.map(product => {                                           //product menu
                                 return (
                                     <ul>
-
-                                    <li>
-                                        <a className="App-nav-item" id={product[0]} style={{width: "100%", display:"inline"}} onClick={async () => {
-                                            await this.productClickHandler(product);
-
-                                        }}>{product[1].title}</a>
-
+                                        <li>
+                                            <a className="App-nav-item"
+                                               id={product[0]}
+                                               style={{width: "100%", display:"inline"}}
+                                               onClick={async () => {
+                                                    await this.productClickHandler(product);
+                                            }}>{product[1].title}</a>
                                         </li>
                                     </ul>
                                 )
-
                         })}
-
                     </div>
                     <div className="App-body" id="Body">
-                    </div>
-
-
-
+                </div>
             </div>
-
-
-
-
     );
-
   }
-
 }
 
 export default App;
