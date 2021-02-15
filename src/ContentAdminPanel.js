@@ -39,9 +39,6 @@ class ContentAdminPanel extends Component {
             dataRef = db.collection("pages").doc("Products");
         }
 
-
-
-
         var contentItemRef = await dataRef.collection("pages").doc(localStorage.getItem("item"));
         console.log("item z pamięci", contentItemRef);
         contentItemRef.get()
@@ -65,15 +62,6 @@ class ContentAdminPanel extends Component {
                                     </thead>
                                     <tbody>
 
-
-
-
-
-
-
-
-
-
                                     <tr id="pageTab" className="tabRow" onClick={() => {
                                         var thisElement = document.getElementById("pageTab");
                                         var e = document.getElementById("-pageTab");
@@ -93,11 +81,6 @@ class ContentAdminPanel extends Component {
 
                                         <td>Page</td>
                                     </tr>
-
-
-
-
-
 
                                     <tr className="details" id={"-pageTab"} style={{background: "white"}}>
                                         <td>
@@ -172,25 +155,13 @@ class ContentAdminPanel extends Component {
                                                                         console.error("Error writing document: ", error);
                                                                     });
 
-
-
                                                                 window.location.reload(false);
                                                             }
-
-
-
 
                                                         }}>Add new page
                                                 </button>
 
-
-
-
-
                                             </div>
-
-
-
 
                                             <div className="slidecontainer">
                                                 <button className="App-delete" id="Delete"
@@ -218,24 +189,10 @@ class ContentAdminPanel extends Component {
                                                         }}>Delete this page
                                                 </button>
 
-
-
-
-
                                             </div>
                                         </td>
 
                                     </tr>
-
-
-
-
-
-
-
-
-
-
 
                                     <tr id="contentTab" className="tabRow" onClick={() => {
                                         var thisElement = document.getElementById("contentTab");
@@ -250,7 +207,6 @@ class ContentAdminPanel extends Component {
                                             e.style.border = '2px solid #3662d9';
                                             thisElement.style.borderBottom = 'none';
                                             e.style.borderTop = 'none';
-
                                         }
                                     }}>
 
@@ -270,10 +226,8 @@ class ContentAdminPanel extends Component {
                                                            let val = event.target.value;
                                                            localStorage.setItem("oldTitle", document.getElementById("Page-title").innerText);
                                                            document.getElementById("Page-title").innerText = val;
-
                                                        }}
                                                 />
-
 
                                                 <p className="Label">Text size:</p>
                                                 <input type="range" min="8" max="100" id="Title-textSize"
@@ -284,7 +238,6 @@ class ContentAdminPanel extends Component {
                                                            document.getElementById("Page-title").style.fontSize = val + "px";
                                                        }}
                                                 />
-
                                                 <p className="Label">Text margin:</p>
                                                 <input type="range" min="0" max="80" id="Title-textMargin"
                                                        defaultValue={doc.data().margin.split("%")[0]}
@@ -303,14 +256,10 @@ class ContentAdminPanel extends Component {
                                                        }}
                                                 />
 
-
-
-
                                             </div>
                                         </td>
 
                                     </tr>
-
 
                                     <tr id="contentImgTab" className="tabRow" onClick={() => {
                                         var thisElement = document.getElementById("contentImgTab");
@@ -386,37 +335,10 @@ class ContentAdminPanel extends Component {
                                                         }}>Right
                                                 </button>
 
-
-
-
                                             </div>
                                         </td>
 
                                     </tr>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     <tr id="textContentTab" className="tabRow" onClick={() => {
                                         var thisElement = document.getElementById("textContentTab");
@@ -433,7 +355,6 @@ class ContentAdminPanel extends Component {
                                             e.style.borderTop = 'none';
 
                                         }
-
 
                                     }}>
 
@@ -464,6 +385,11 @@ class ContentAdminPanel extends Component {
                                                         onClick={() => {
                                                             document.execCommand("underline");
                                                         }}><u>Underscore</u>
+                                                </button>
+                                                <button className="App-textEdit" id="Justify"
+                                                        onClick={() => {
+                                                            document.execCommand("justifyFull", false, "");
+                                                        }}>J u s t i f y
                                                 </button>
 
 
@@ -497,30 +423,10 @@ class ContentAdminPanel extends Component {
                                                        }}
                                                 />
 
-
-
-
-
-
                                             </div>
                                         </td>
 
                                     </tr>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                                     </tbody>
 

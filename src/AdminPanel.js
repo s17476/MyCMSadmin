@@ -9,8 +9,6 @@ const db = firebase.firestore();
 class AdminPanel extends React.Component {
 
 
-
-
     submitHandler = (event) => {
         event.preventDefault();
 
@@ -134,10 +132,6 @@ class AdminPanel extends React.Component {
             window.alert("An error occurred while saving the changes");
     }
 
-
-
-
-
     rgbToHex(col)
     {
         if(col.charAt(0)=='r')
@@ -189,8 +183,6 @@ class AdminPanel extends React.Component {
                             }}>
                                 <td>Logo</td>
                             </tr>
-
-
 
                             <tr className="details" id={"-logoTab"} style={{background: "white"}}>
                                 <td>
@@ -291,7 +283,7 @@ class AdminPanel extends React.Component {
                                                }}
                                         />
                                         <p className="Label">Text size:</p>
-                                        <input type="range" min="5" max="150"
+                                        <input type="range" min="5" max="250"
                                                defaultValue={document.getElementById("App-text").style.fontSize.split("px")[0]}
                                                name = "fontSize"
                                                onChange={(event) => {
@@ -345,13 +337,7 @@ class AdminPanel extends React.Component {
 
                             </tr>
 
-
                             </tbody>
-
-
-
-
-
 
                         </table>
 
@@ -363,61 +349,15 @@ class AdminPanel extends React.Component {
                 console.log(error);
             });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         ReactDOM.render(
             <MenuAdminPanel />,
             document.getElementById("Admin-menu")
         );
 
-
-
-
-
-
         ReactDOM.render(
             <ContentAdminPanel />,
             document.getElementById("Admin-content")
         );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
 

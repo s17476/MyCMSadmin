@@ -57,25 +57,6 @@ class MenuAdminPanel extends React.Component {
                                 }
                             }}>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                                 <td>Menu</td>
                             </tr>
 
@@ -188,11 +169,6 @@ class MenuAdminPanel extends React.Component {
                             </tr>
 
                             </tbody>
-
-
-
-
-
 
                         </table>
 

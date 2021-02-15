@@ -57,6 +57,7 @@ class App extends Component{
     var items = [];
     var products = [];
 
+
     //load header data and style
 
     var headerRef = await db.collection("header").doc("myHeader");
@@ -333,6 +334,7 @@ class App extends Component{
         this.setState({
             items: sorted
         });
+
     }
 
     // submenu buttons click handler

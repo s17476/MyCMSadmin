@@ -73,12 +73,12 @@
   overflow: scroll;
 }
 #productNavbar{
-  margin: 0;
+
   padding: 0;
   z-index: 1;
   position: absolute;
-    left: 0;
-    top: 31%;
+    left: -2%;
+    margin-top: 60px;
   width: 25%;
 text-align: left;
 
